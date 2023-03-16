@@ -1,0 +1,496 @@
+{
+   "openapi": "3.0.3",
+   "info": {
+      "title": "BaldeagleAPi",
+      "description": "rest api backend for baldeagle payment voucher application",
+      "version": "1.0.0",
+      "contact": {
+         "email": "usmanxp12@gmail.com"
+      }
+   },
+   "servers": [
+      {
+         "url": "https://localhost:3000",
+         "description": "baldeagle api"
+      }
+   ],
+   "security": [
+      {
+         "BearerAuth": []
+      }
+   ],
+   "paths": {
+      "/auth/signup": {
+         "post": {
+            "security": [],
+            "tags": [
+               "signup"
+            ],
+            "summary": "create user accounts",
+            "description": "this endpoint creates a user account",
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/userSchema"
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": {
+               "201": {
+                  "description": "user created"
+               },
+               "400": {
+                  "description": "error creating new user",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/auth/login": {
+         "post": {
+            "security": [],
+            "tags": [
+               "login"
+            ],
+            "summary": "login a user",
+            "description": "this endpoint creates a user account",
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/loginRequestBody"
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": {
+               "200": {
+                  "description": "user created",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/loginResponse"
+                        }
+                     }
+                  }
+               },
+               "401": {
+                  "description": "invalid email or password",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/paymentvoucher": {
+         "get": {
+            "tags": [
+               "paymentvoucher"
+            ],
+            "summary": "returns all payment vouchers",
+            "operationId": "getallpaymentvouchers",
+            "description": "this returns all payment vocuhers",
+            "responses": {
+               "200": {
+                  "description": "All went well",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/paymentvoucher"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "Post not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "post": {
+            "tags": [
+               "payment_voucher"
+            ],
+            "operationId": "createApaymentVoucher",
+            "description": "creates a payment voucher",
+            "summary": "Create a new payment voucher",
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/paymentvoucher"
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": {
+               "201": {
+                  "description": "record created",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/paymentvoucher"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/paymentvoucher/{id}": {
+         "parameters": [
+            {
+               "name": "id",
+               "in": "path",
+               "description": "ID of the paymentvoucher",
+               "required": true,
+               "schema": {
+                  "type": "string"
+               }
+            }
+         ],
+         "put": {
+            "tags": [
+               "payment voucher"
+            ],
+            "description": "update a pyament voucher record",
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/paymentvoucher"
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": {
+               "200": {
+                  "description": "All went well",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/paymentvoucher"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "Post not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "get": {
+            "tags": [
+               "payment voucher"
+            ],
+            "summary": "Get a single record",
+            "responses": {
+               "200": {
+                  "description": "All went well",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/paymentvoucher"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "record not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/byApprover/{email}": {
+         "parameters": [
+            {
+               "name": "email",
+               "in": "path",
+               "description": "email of the approver of the invoice",
+               "required": true,
+               "schema": {
+                  "type": "string"
+               }
+            }
+         ],
+         "get": {
+            "tags": [
+               "payment voucher"
+            ],
+            "summary": "Get a single record",
+            "responses": {
+               "200": {
+                  "description": "All went well",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/paymentvoucher"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "record not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/byInitiator/{email}": {
+         "parameters": [
+            {
+               "name": "email",
+               "in": "path",
+               "description": "email of the initiator of the invoice",
+               "required": true,
+               "schema": {
+                  "type": "string"
+               }
+            }
+         ],
+         "get": {
+            "tags": [
+               "payment voucher"
+            ],
+            "summary": "Get a single record",
+            "responses": {
+               "200": {
+                  "description": "All went well",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/paymentvoucher"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "record not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/byReviewer/{email}": {
+         "parameters": [
+            {
+               "name": "email",
+               "in": "path",
+               "description": "email of the reviewer of the invoice",
+               "required": true,
+               "schema": {
+                  "type": "string"
+               }
+            }
+         ],
+         "get": {
+            "tags": [
+               "payment voucher"
+            ],
+            "summary": "Get a single record",
+            "responses": {
+               "200": {
+                  "description": "All went well",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/paymentvoucher"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "record not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {}
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components": {
+      "schemas": {
+         "paymentvoucher": {
+            "type": "object",
+            "properties": {
+               "id": {
+                  "type": "number",
+                  "description": "ID of the post"
+               },
+               "initiator": {
+                  "type": "string",
+                  "description": "voucher initiator's email"
+               },
+               "voucher_no": {
+                  "type": "string",
+                  "description": "string to uniquely identify a payment voucher"
+               },
+               "particulars": {
+                  "type": "object",
+                  "description": "a json object containing a break down of the payment voucher item"
+               },
+               "authorizer": {
+                  "type": "string",
+                  "description": "voucher authorizers's email"
+               },
+               "approver": {
+                  "type": "string",
+                  "description": "voucher approver's email"
+               },
+               "mode_of_payment": {
+                  "type": "string",
+                  "description": "string describing mode of payment this can either be cash or transfer"
+               },
+               "account_number": {
+                  "type": "string",
+                  "description": "number of account which payment is to be made to"
+               },
+               "payment_to": {
+                  "type": "string",
+                  "description": "final receiver of the payment"
+               },
+               "department_subsidiary": {
+                  "type": "string",
+                  "description": "department / subsidiary of the voucher's initiator"
+               },
+               "amount_in_words": {
+                  "type": "string",
+                  "description": "total amount in words"
+               },
+               "total_amount": {
+                  "type": "number",
+                  "description": "total amount of the invoice"
+               },
+               "meta": {
+                  "type": "object",
+                  "description": "a json object which contains meta data for an initiated payment voucher"
+               },
+               "description": {
+                  "type": "string",
+                  "description": "description of payment voucher"
+               }
+            }
+         },
+         "userSchema": {
+            "type": "object",
+            "properties": {
+               "email": {
+                  "type": "string",
+                  "description": "user's email"
+               },
+               "first_name": {
+                  "type": "string",
+                  "description": "user's first name"
+               },
+               "last_name": {
+                  "type": "string",
+                  "description": "user's last name"
+               },
+               "password": {
+                  "type": "string",
+                  "description": "user's password"
+               }
+            }
+         },
+         "loginRequestBody": {
+            "type": "object",
+            "properties": {
+               "email": {
+                  "type": "string",
+                  "description": "user email"
+               },
+               "password": {
+                  "type": "string",
+                  "description": "user password"
+               }
+            }
+         },
+         "loginResponse": {
+            "type": "object",
+            "properties": {
+               "token": {
+                  "type": "string",
+                  "description": "jwt token"
+               },
+               "email": {
+                  "type": "string",
+                  "description": "user email"
+               },
+               "name": {
+                  "type": "string",
+                  "description": "user names"
+               }
+            }
+         }
+      },
+      "securitySchemes": {
+         "BearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "Jwt"
+         }
+      }
+   }
+}
